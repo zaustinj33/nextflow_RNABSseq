@@ -7,7 +7,7 @@ params.outdir = "$baseDir/results"
 
 
 log.info """\
-         R N A S E Q - N F   P I P E L I N E    
+         RNA Bisulfite Sequencing Pipeline    
          ===================================
          transcriptome: ${params.transcriptome_file}
          reads        : ${params.reads}
@@ -34,8 +34,8 @@ process setup {
 process fastqc {
     tag "FASTQC on $pair_id"
     Channel
-        .fromFilePairs( params.reads, checkIfExists: true )
-        .into { read_pairs_ch; read_pairs2_ch }
+        .fromFilePairs( params.reads, checkIfExists: true, ifEmpty: error "No reads found" )
+        .set { reads }
 
     input:
     tuple pair_id, path(reads) from read_pairs_ch
@@ -53,8 +53,9 @@ process fastqc {
 process cleanReads {
     tag "Cleaning $pair_id"
     Channel
-        .fromFilePairs( params.reads, checkIfExists: true )
-        .into { read_pairs_ch; read_pairs2_ch }
+        .fromFilePairs( params.reads, checkIfExists: true, ifEmpty: error "No reads found" )
+        .set { reads }
+    publishDir "$params.workingdata"
 
     input:
     tuple pair_id, path(reads) from read_pairs_ch
@@ -64,8 +65,8 @@ process cleanReads {
 
     script:
     """
-    mkdir fastqc_${pair_id}_logs
-    fastqc -o fastqc_${pair_id}_logs -f fastq -q ${reads}
+    fastp -w 16 -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 -i${reads[0]} -I ${reads[1]} --out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz
+     --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html --detect_adapter_for_pe --overlap_diff_percent_limit 25
     """  
 }
 
