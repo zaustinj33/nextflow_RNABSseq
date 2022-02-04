@@ -20,6 +20,7 @@ log.info """\
 // Check that paired reads exist
 Channel 
     .fromFilePairs( params.reads, checkIfExists: true )
+    .ifEmpty{ error "No matching reads"}
     .set { read_pairs_ch } 
 
 process setup {
@@ -55,17 +56,17 @@ process cleanReads {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "$params.workingdata"
+    publishDir params.workingdata, mode: 'copy'
 
     input:
     tuple pair_id, path(reads) from read_pairs_ch
 
     output:
-    path "fastqc_${pair_id}_logs" into fastqc_ch
+    tuple val(pair_id), path()
 
     script:
     """
-    fastp -w 16 -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 -i${reads[0]} -I ${reads[1]} --out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz
+    fastp -w ${tasks.cpus} -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 -i${reads[0]} -I ${reads[1]} --out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz
      --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html --detect_adapter_for_pe --overlap_diff_percent_limit 25
     """  
 }
