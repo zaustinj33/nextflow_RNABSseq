@@ -35,7 +35,7 @@ process fastqc {
     tag "FASTQC on $pair_id"
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
-        .set { reads }
+        .into { read_pairs_ch; read_pairs2_ch }
 
     input:
     tuple pair_id, path(reads) from read_pairs_ch
@@ -54,7 +54,7 @@ process cleanReads {
     tag "Cleaning $pair_id"
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
-        .set { reads }
+        .into { read_pairs_ch; read_pairs2_ch }
     publishDir "$params.workingdata"
 
     input:
