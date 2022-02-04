@@ -62,7 +62,7 @@ process cleanReads {
     tuple pair_id, path(reads) from read_pairs_ch
 
     output:
-    tuple val(pair_id), path()
+    set pair_id
 
     script:
     """
