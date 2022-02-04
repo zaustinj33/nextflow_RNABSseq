@@ -34,7 +34,7 @@ process setup {
 process fastqc {
     tag "FASTQC on $pair_id"
     Channel
-        .fromFilePairs( params.reads, checkIfExists: true, ifEmpty: error "No reads found" )
+        .fromFilePairs( params.reads, checkIfExists: true )
         .set { reads }
 
     input:
@@ -53,7 +53,7 @@ process fastqc {
 process cleanReads {
     tag "Cleaning $pair_id"
     Channel
-        .fromFilePairs( params.reads, checkIfExists: true, ifEmpty: error "No reads found" )
+        .fromFilePairs( params.reads, checkIfExists: true )
         .set { reads }
     publishDir "$params.workingdata"
 
