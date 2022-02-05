@@ -27,8 +27,8 @@ Channel
 process setup {
 
     """
-    mkdir $params.outdir
-    mkdir $params.workingdata
+    mkdir -p $params.outdir
+    mkdir -p $params.workingdata
     """
 }
 
