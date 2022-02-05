@@ -1,0 +1,44 @@
+Basic setup for NextFlow on SLURM environment
+
+NextFlow performs jobs with a pipeline in parallel. By default, this puts a significant load on the SLURM
+scheduler. 
+See here: https://hpc.nih.gov/apps/nextflow.html
+and here: https://www.nextflow.io/docs/latest/config.html#
+
+Therefore, we need to make adjustments to the way Nextflow behaves on the HPC.
+
+First, NextFlow should ALWAYS be tested on an interactive node (salloc...)
+
+Second, we change some of the default parameters of NextFlow:
+export NXF_OPTS="-Xms500M -Xmx20G"  # sets minimum and maximum memory usage on a node for polite node sharing
+export NXF_CLUSTER_SEED=$(shuf -i 0-16777216 -n 1)  # sets node usage per job to 1 node
+
+Third, you can set profiles up if you need to use interactive, batch, and cloud setups 
+interchangeably using -profile
+Example:
+profiles {
+
+    standard {
+        process.executor = 'local'
+    }
+
+    cluster {
+        process.executor = 'slurm'
+        process.queue = 'normal'
+        process.memory = '10GB'
+    }
+
+    big_mem {
+        process.executor = 'slurm'
+        process.queue = 'normal'
+        process.memory = '100GB'
+        process.cpus = '40'
+    }
+
+    cloud {
+        process.executor = 'cirrus'
+        process.container = 'cbcrg/imagex'
+        docker.enabled = true
+    }
+
+}
