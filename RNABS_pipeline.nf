@@ -67,8 +67,10 @@ process cleanReads {
 
     script:
     """
-    fastp -w ${task.cpus} -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 -i${reads[0]} -I ${reads[1]} --out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz
-     --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html --detect_adapter_for_pe --overlap_diff_percent_limit 25
+    fastp -w ${task.cpus} -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 \
+     -i${reads[0]} -I ${reads[1]} --out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz \
+     --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html \
+     --detect_adapter_for_pe --overlap_diff_percent_limit 25
     """  
 }
 
