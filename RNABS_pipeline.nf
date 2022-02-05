@@ -57,7 +57,7 @@ process cleanReads {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir params.workingdata, mode: 'copy'
+    publishDir ${params.workingdata}/${pair_id}
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
