@@ -12,6 +12,7 @@ log.info """\
          ===================================
          transcriptome: ${params.transcriptome_file}
          reads        : ${params.reads}
+         raw_data     : ${params.rawdata}
          outdir       : ${params.outdir}
          working_data : ${params.workingdata}
          """
@@ -38,7 +39,7 @@ process fastqc {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir params.outdir, mode: 'copy'
+    publishDir "$params.rawdata", pattern: "$pair_id"
 
 
     input:
@@ -59,13 +60,14 @@ process cleanReads {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir params.workingdata, mode: 'copy'
+    publishDir "$params.workingdata/$pair_id", pattern: '.fq.gz'
+    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id"
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    set file('*.html') into fastp_results_ch
+    file "*"
 
     script:
     """
