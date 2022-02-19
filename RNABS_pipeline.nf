@@ -38,6 +38,8 @@ process fastqc {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
+    publishDir params.outdir, mode: 'copy'
+
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
@@ -57,13 +59,13 @@ process cleanReads {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "${params.workingdata}/${pair_id}"
+    publishDir params.workingdata, mode: 'copy'
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    tuple val(pair_id)
+    set file('*.html') into fastp_results_ch
 
     script:
     """
