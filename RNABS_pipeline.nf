@@ -61,7 +61,7 @@ process cleanReads {
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
     publishDir "$params.working_data/$pair_id", pattern: '.fq.gz', mode = 'copy'
-    publishDir "$params.working_data/$pair_id", pattern: "$pair_id", mode = 'copy'
+    //publishDir "$params.working_data/$pair_id", pattern: "$pair_id", mode = 'copy'
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
