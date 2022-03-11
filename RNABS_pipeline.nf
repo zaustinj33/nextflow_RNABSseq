@@ -39,7 +39,7 @@ process fastqc {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id"
+    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id", mode = 'copy'
 
 
     input:
@@ -50,8 +50,8 @@ process fastqc {
 
     script:
     """
-    mkdir fastqc_${pair_id}_logs
-    fastqc -o fastqc_${pair_id}_logs -f fastq -q ${reads}
+    #mkdir -p fastqc_${pair_id}_logs
+    fastqc -f fastq -q ${reads}
     """  
 }
 
@@ -60,8 +60,8 @@ process cleanReads {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "$params.workingdata/$pair_id", pattern: '.fq.gz'
-    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id"
+    publishDir "$params.workingdata/$pair_id", pattern: '.fq.gz', mode = 'copy'
+    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id", mode = 'copy'
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
@@ -72,7 +72,7 @@ process cleanReads {
     script:
     """
     fastp -w ${task.cpus} -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 \
-     -i ${reads[0]} -I ${reads[1]} --out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz \
+     -i ${reads[0]} -I ${reads[1]} \ #--out1 ${pair_id}_1_qual.fq.gz --out2 ${pair_id}_2_qual.fq.gz \
      --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html \
      --detect_adapter_for_pe --overlap_diff_percent_limit 25
     """  
