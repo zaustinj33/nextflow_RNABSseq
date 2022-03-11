@@ -4,7 +4,7 @@ params.reads = "$baseDir/raw_data/*_{1,2}.fq"
 params.transcriptome_file = "$baseDir/../Annotation/mm10.fa"
 params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
-params.workingdata = "$baseDir/working_data"
+params.working_data = "$baseDir/working_data"
 
 
 log.info """\
@@ -14,7 +14,7 @@ log.info """\
          reads        : ${params.reads}
          raw_data     : ${params.rawdata}
          outdir       : ${params.outdir}
-         working_data : ${params.workingdata}
+         working_data : ${params.working_data}
          """
          .stripIndent()
 
@@ -29,7 +29,7 @@ process setup {
 
     """
     mkdir -p $params.outdir
-    mkdir -p $params.workingdata
+    mkdir -p $params.working_data
     """
 }
 
@@ -39,7 +39,7 @@ process fastqc {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id", mode = 'copy'
+    publishDir "$params.working_data/$pair_id", pattern: "$pair_id", mode = 'copy'
 
 
     input:
@@ -60,8 +60,8 @@ process cleanReads {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "$params.workingdata/$pair_id", pattern: '.fq.gz', mode = 'copy'
-    publishDir "$params.workingdata/$pair_id", pattern: "$pair_id", mode = 'copy'
+    publishDir "$params.working_data/$pair_id", pattern: '.fq.gz', mode = 'copy'
+    publishDir "$params.working_data/$pair_id", pattern: "$pair_id", mode = 'copy'
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
