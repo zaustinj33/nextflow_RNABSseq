@@ -1,6 +1,6 @@
 // Define input parameters
 
-params.reads = "$baseDir/raw_data/*_{1,2}.fq"
+params.reads = "$baseDir/raw_data/*/*_{1,2}.fq"
 params.transcriptome_file = "$baseDir/../Annotation/mm10.fa"
 params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
@@ -34,7 +34,7 @@ process setup {
     """
 }
 
-
+// Initial FastQC check
 process fastqc {
     tag "FASTQC on $pair_id"
     Channel
@@ -56,6 +56,7 @@ process fastqc {
     """  
 }
 
+// Clean raw reads
 process cleanReads {
     tag "Cleaning $pair_id"
     Channel
