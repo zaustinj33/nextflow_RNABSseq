@@ -29,7 +29,7 @@ process setup {
 
     """
     mkdir -p $params.outdir
-    mkdir -p $params.working_data/$pair_id
+    mkdir -p $params.working_data
     """
 }
 
