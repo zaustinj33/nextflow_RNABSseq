@@ -39,7 +39,7 @@ process fastqc {
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "$params.rawdata/$pair_id", mode = 'copy'
+    publishDir "${params.rawdata}/${pair_id}", mode = 'copy'
 
 
     input:
