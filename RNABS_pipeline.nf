@@ -61,6 +61,7 @@ process fastqc {
 // Clean raw reads
 process cleanReads {
     tag "Cleaning $pair_id"
+    scratch true
     
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy' //pattern: '.fq.gz',
     publishDir "${params.rawdata}/${pair_id}", pattern: '.json', mode: 'copy'
