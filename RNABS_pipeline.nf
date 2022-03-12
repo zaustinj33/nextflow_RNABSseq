@@ -63,8 +63,8 @@ process cleanReads {
     tag "Cleaning $pair_id"
     
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy' //pattern: '.fq.gz',
-    //publishDir "${params.rawdata}/${pair_id}", pattern: '.json', mode: 'copy'
-    //publishDir "${params.rawdata}/${pair_id}", pattern: '.html', mode: 'copy'
+    publishDir "${params.rawdata}/${pair_id}", pattern: '.json', mode: 'copy'
+    publishDir "${params.rawdata}/${pair_id}", pattern: '.html', mode: 'copy'
 
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
@@ -80,7 +80,7 @@ process cleanReads {
     script:
     """
     fastp -w ${task.cpus} -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 \
-     -i ${reads[0]} -I ${reads[1]} -o ${reads[0]} -O ${reads[1]}\
+     -i ${reads[0]} -I ${reads[1]} -o ${pair_id}_1.fq -O ${pair_id}_2.fq\
      --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html \
      --detect_adapter_for_pe --overlap_diff_percent_limit 25
     """  
