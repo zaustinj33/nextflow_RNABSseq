@@ -53,7 +53,7 @@ process fastqc {
 
     script:
     """
-    #mkdir -p fastqc_${pair_id}_logs
+    mkdir -p fastqc_${pair_id}_logs
     fastqc -f fastq -q ${reads} -o fastqc_${pair_id}_logs
     """  
 }
