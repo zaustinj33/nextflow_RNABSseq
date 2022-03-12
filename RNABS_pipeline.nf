@@ -37,10 +37,12 @@ process setup {
 // Initial FastQC check
 process fastqc {
     tag "FASTQC on $pair_id"
+    publishDir "${params.rawdata}/${pair_id}", mode: 'copy'
+
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
-    publishDir "${params.rawdata}/${pair_id}", mode: 'copy'
+    
 
 
     input:
@@ -59,12 +61,15 @@ process fastqc {
 // Clean raw reads
 process cleanReads {
     tag "Cleaning $pair_id"
-    Channel
-        .fromFilePairs( params.reads, checkIfExists: true )
-        .into { read_pairs_ch; read_pairs2_ch }
+    
     publishDir "${params.rawdata}/${pair_id}", pattern: '.fq.gz', mode: 'copy'
     publishDir "${params.rawdata}/${pair_id}", pattern: '.json', mode: 'copy'
     publishDir "${params.rawdata}/${pair_id}", pattern: '.html', mode: 'copy'
+
+    Channel
+        .fromFilePairs( params.reads, checkIfExists: true )
+        .into { read_pairs_ch; read_pairs2_ch }
+
 
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
