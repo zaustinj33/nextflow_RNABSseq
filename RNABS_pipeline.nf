@@ -77,7 +77,7 @@ process cleanReads {
 
     output:
     file "*.fq.gz" into clean_reads
-    file ".{html, json}" into read_stats 
+    file "*.{html, json}" into read_stats 
 
     script:
     """
