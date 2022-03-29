@@ -20,7 +20,7 @@ log.info """\
          .stripIndent()
 
 
-// Check that paired reads exist
+// Check that paired reads exist, create read_id tuple: (pair_id, first file, second file)
 Channel 
     .fromFilePairs( params.reads, checkIfExists: true )
     .ifEmpty{ error "No matching reads"}
@@ -76,7 +76,8 @@ process cleanReads {
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    file "*"
+    file "*.fq.gz" into clean_reads
+    file ".{html, json}" into read_stats 
 
     script:
     """
@@ -88,5 +89,26 @@ process cleanReads {
 }
 
 
+// map reads to C2T converted genome
+process mapReads {
+    tag "Mapping reads from $pair_id"
+    scratch true
 
+    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+    Channel
+        .fromFilePairs( params.reads, checkIfExists: true )
+        .into { read_pairs_ch; read_pairs2_ch }
+
+    input: 
+    set val(name), file(reads) from clean_reads
+
+    script:
+    """
+    echo ${name}
+    echo ${reads[0]}
+    echo ${reads[1]} 
+    """
+
+
+}
 
