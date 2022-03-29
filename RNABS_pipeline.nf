@@ -88,9 +88,5 @@ process cleanReads {
 }
 
 
-// Map reads to mm10 C2T converted genome
-process mapReads {
-
-}
 
 
