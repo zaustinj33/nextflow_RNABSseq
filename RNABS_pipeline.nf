@@ -1,6 +1,6 @@
 // Define input parameters
 
-params.reads = "$baseDir/raw_data/*/*_{1,2}.fq"
+params.reads = "$baseDir/raw_data/test/*_{1,2}.fq"
 params.transcriptome_file = "$baseDir/../Annotation/mm10.fa"
 params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
@@ -85,6 +85,12 @@ process cleanReads {
      --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html \
      --detect_adapter_for_pe --overlap_diff_percent_limit 25
     """  
+}
+
+
+// Map reads to mm10 C2T converted genome
+process mapReads {
+
 }
 
 
