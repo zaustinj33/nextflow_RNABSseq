@@ -76,7 +76,7 @@ process cleanReads {
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    file "*[0-9].fq.gz" into clean_reads
+    file "*{1,2}.fq.gz" into clean_reads
     file "*.{html, json}" into read_stats 
 
     script:
