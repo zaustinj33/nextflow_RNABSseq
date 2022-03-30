@@ -104,7 +104,7 @@ process mapReads {
     
     output:
     //stdout ch
-    set val(pair_id), into raw_bam_Count
+    tuple val(pair_id), into raw_bam_Count
     set val(pair_id), file("*.bam") into raw_bam_Call
     set val(pair_id), file("*.bai") into raw_bai
 
