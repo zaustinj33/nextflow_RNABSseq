@@ -53,6 +53,7 @@ process fastqc {
 
     script:
     """
+    module load fastqc
     mkdir -p fastqc_${pair_id}_logs
     fastqc -f fastq -q ${reads} -o fastqc_${pair_id}_logs
     """  
@@ -76,11 +77,12 @@ process cleanReads {
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    file "*{1,2}.fq" into clean_reads
+    file "*val*.fq" into clean_reads
     file "*.{html, json}" into read_stats 
 
     script:
     """
+    module load fastp
     fastp -w ${task.cpus} -q 25 -f 6 -t 6 -l 50 --trim_poly_x --poly_x_min_len 10 \
      -i ${reads[0]} -I ${reads[1]} -o ${pair_id}_val_1.fq -O ${pair_id}_val_2.fq \
      --failed_out ${pair_id}_failed.fq.gz -j ${pair_id}.json -h ${pair_id}.html \
@@ -106,7 +108,7 @@ process mapReads {
     """
     #echo ${name}
     echo ${reads[0]}
-    echo ${reads[1]} 
+    echo ${reads[1]}
     """
 
 
