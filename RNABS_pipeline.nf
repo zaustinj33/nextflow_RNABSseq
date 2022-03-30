@@ -24,7 +24,7 @@ log.info """\
 Channel 
     .fromFilePairs( params.reads, checkIfExists: true )
     .ifEmpty{ error "No matching reads"}
-    .into { read_pairs_ch; read_pairs2_ch } 
+    .set { read_pairs_ch } 
 
 process setup {
 
@@ -104,7 +104,7 @@ process mapReads {
     
     output:
     //stdout ch
-    set val(pair_id), file("*.bam") into raw_bam_Call
+    set val(pair_id), file("*.bam") into raw_bam
     set val(pair_id), file("*.bai") into raw_bai
 
 
@@ -126,7 +126,7 @@ process countCs {
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
     input:
-    tuple val(pair_id), path(reads) from read_pairs_ch2
+    set val(pair_id), file(mappedFile) from raw_bam
 
     output:
     set val(pair_id), file(cutoffFiles) into cutoff_bam
@@ -148,7 +148,7 @@ process callSites {
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id), file(mappedFile) from raw_bam_Call
+    set val(pair_id), file(mappedFile) from raw_bam
     file(cutoffFiles) from cutoff_bam
 
     output:
@@ -161,6 +161,7 @@ process callSites {
     meRanCall -p 40 -bam ${mappedFile} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
 
     """
+
 
 }
 
