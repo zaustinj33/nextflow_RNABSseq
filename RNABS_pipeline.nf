@@ -147,7 +147,7 @@ process callSites {
     tag "Counting Cs per read in $pair_id"
     scratch true
     cpus 40
-    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+    publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
     input:
     set val(pair_id), file(mappedFile) from raw_bam
@@ -159,6 +159,7 @@ process callSites {
 
     """
     # Call raw map file
+    module load meRanTK
     meRanCall -p 40 -bam ${mappedFile} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
 
     """
