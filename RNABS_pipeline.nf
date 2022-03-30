@@ -121,13 +121,13 @@ process countCs {
     tag "Counting Cs per read in $pair_id"
     scratch true
     cpus 4
-    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+    publishDir "${params.working_data}/${pair_id}",  mode: 'copy', overwrite: true
 
     input:
     val(pair_id) from pair_id_name
 
     output:
-    set val(pair_id), path(cutoffFiles) into cutoff_bam
+    set val(pair_id), path("*.bam") into cutoff_bam
 
     """
     module reset
