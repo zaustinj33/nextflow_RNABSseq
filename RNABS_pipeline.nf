@@ -77,7 +77,7 @@ process cleanReads {
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    file "*val*.fq" into clean_reads
+    tuple val(pair_id), file("*val*.fq") into clean_reads
     file "*.{html, json}" into read_stats 
 
     script:
@@ -96,16 +96,22 @@ process mapReads {
     tag "Mapping reads from $pair_id"
     scratch true
 
+    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+
     input: 
-    set val(name), file(reads) from clean_reads
+    set val(pair_id), file(cleanReads) from 
+    
+    output:
+    stdout ch
 
     script:
     """
-    echo ${name[0]}
-    echo ${reads[0]}
-    echo ${reads[1]}
+    echo ${pair_id}
+    echo ${cleanReads[0]}
+    echo ${cleanReads[1]}
     """
 
-
 }
+
+ch.view { print "I say..  $it" }
 
