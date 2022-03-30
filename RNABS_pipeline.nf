@@ -102,11 +102,11 @@ process mapReads {
         .into { read_pairs_ch; read_pairs2_ch }
 
     input: 
-    set file(reads) from clean_reads
+    set val(name), file(reads) from clean_reads
 
     script:
     """
-    #echo ${name}
+    echo ${name}
     echo ${reads[0]}
     echo ${reads[1]}
     """
