@@ -118,4 +118,24 @@ process mapReads {
 
 }
 
+// Count Cs per read in mapped files
+
+process countCs {
+    tag "Counting Cs per read in $pair_id"
+    scratch true
+    cpus 4
+    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+
+    input:
+    set val(pair_id), file(mappedFile) from raw_bam
+
+    output:
+    set val(pair_id), file(cutoffFiles) into cutoff_bam
+
+    """
+    python 03b_readWrite_C_cutoff.py ${pair_id} ${PWD}
+    """
+
+}
+
 
