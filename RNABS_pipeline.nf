@@ -105,13 +105,14 @@ process mapReads {
     stdout ch
 
     script:
-    """
+    """ 
+    module load meRanTK
     echo ${pair_id}
-    echo ${cleanReads[0]}
-    echo ${cleanReads[1]}
+    meRanGh align -un -f ${cleanReads[0]} -r ${cleanReads[0]} -t 40 -fmo -ds -S ${pair_id}_genomeMap.sam \
+     -ds -MM -id /projects/epigenomicslab/Annotation/mm10_meRanGh/BSgenomeIDX \
+     -GTF /projects/epigenomicslab/Annotation/mm10.ensGene.for.RNABS.gtf
     """
 
 }
 
-ch.view { print "I say..  $it" }
 
