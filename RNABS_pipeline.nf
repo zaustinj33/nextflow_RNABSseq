@@ -127,7 +127,7 @@ process countCs {
     val(pair_id) from pair_id_name
 
     output:
-    set val(pair_id), path("*.bam") into cutoff_bam
+    set val(pair_id), path("*cutoff_PE.bam") into cutoff_bam
 
     """
     module reset
@@ -156,6 +156,7 @@ process callSites {
     """
     # Call raw map file
     module load meRanTK
+    echo ${cutoffFiles}
     meRanCall -p 40 -bam ${mappedFile} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
 
     """
