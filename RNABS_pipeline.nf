@@ -156,7 +156,7 @@ process callSites {
     output:
     set val(pair_id), file(rawCountMatrix) into rawCounts
     
-
+    script:
     """
     # Call raw map file
     module load meRanTK
