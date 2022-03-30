@@ -126,7 +126,7 @@ process countCs {
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id)
+    set val(pair_id) from raw_bam_Count
 
     output:
     set val(pair_id), file(cutoffFiles) into cutoff_bam
