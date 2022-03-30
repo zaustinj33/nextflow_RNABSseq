@@ -135,7 +135,7 @@ process countCs {
     """
     module reset
     module load Pysam
-    python 03b_readWrite_C_cutoff.py ${pair_id} ${PWD}
+    python bin/03b_readWrite_C_cutoff.py ${pair_id} ${PWD}
     """
 
 
