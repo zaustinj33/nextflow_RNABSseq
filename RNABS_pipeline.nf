@@ -104,8 +104,8 @@ process mapReads {
     
     output:
     //stdout ch
-    set val(pair_id), file("*.bam") into raw_bam_Count //, raw_bam_Call}
-    set val(pair_id), file("*.bai") into raw_bai
+    set val(pair_id), file("*genomeMap_sorted.bam") into raw_bam_Count, raw_bam_Call
+    set val(pair_id), file("*genomeMap_sorted.bam.bai") into raw_bai
 
 
     script:
