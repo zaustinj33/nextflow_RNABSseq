@@ -96,19 +96,14 @@ process mapReads {
     tag "Mapping reads from $pair_id"
     scratch true
 
-    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
-    Channel
-        .fromFilePairs( params.reads, checkIfExists: true )
-        .into { read_pairs_ch; read_pairs2_ch }
-
     input: 
     set val(name), file(reads) from clean_reads
 
     script:
     """
-    echo ${name[0]}
-    echo ${name[1]}
-    echo ${reads}
+    echo ${name}
+    echo ${reads[0]}
+    echo ${reads[1]}
     """
 
 
