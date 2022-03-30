@@ -104,7 +104,7 @@ process mapReads {
 
     script:
     """
-    echo ${name}
+    #echo ${name}
     echo ${reads[0]}
     echo ${reads[1]} 
     """
