@@ -161,22 +161,6 @@ process countCs {
     # Call raw map file
     meRanCall -p 40 -bam ${mappedFile} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
 
-    # Call cutoff file
-    #meRanCall -p 40 -bam ${cutoffFiles} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
-
-    # get p-value of sites
-    #meRanCall -p 40 -bam $2/result/$1/$1_3_Ccutoff_PE.bam -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr $GNconvrate -fdr 0.05 -mr 0.00001 -mcov 10
-
-    # Annotate sites
-    #sed -i 's/chrM/chrMT/g' $2/CallResult/$1/$1_Genome10xCall.txt
-    #sed -i 's/chr//' $2/CallResult/$1/$1_Genome10xCall.txt
-
-    #sed -i 's/chrM/chrMT/g' $2/CallResult/$1/$1_Genome10xCall_3_Cutoff.txt
-    #sed -i 's/chr//' $2/CallResult/$1/$1_Genome10xCall_3_Cutoff.txt 
-
-    #meRanAnnotate -t $2/CallResult/$1/$1_Genome10xCall.txt -ensGTF -g $GTF -o $2/CallResult/$1/$1_Genome10xCall_annotate.txt -f 'gene'
-    #meRanAnnotate -t $2/CallResult/$1/$1_Genome10xCall_3_Cutoff.txt -ensGTF -g $GTF -o $2/CallResult/$1/$1_Genome10xCall_3_Cutoff_annotate.txt -f 'gene'
-
     """
 
 
