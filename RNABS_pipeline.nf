@@ -133,7 +133,8 @@ process countCs {
     set val(pair_id), file(cutoffFiles) into cutoff_bam
 
     """
-    python 03b_readWrite_C_cutoff.py ${pair_id} ${PWD}
+    module load Pysam
+    03b_readWrite_C_cutoff.py ${pair_id} ${PWD}
     """
 
 }

@@ -52,6 +52,6 @@ def count_C(samfile):
 
 
 #%%
-bam_file = path + "/result/" + sample_name + "/" + sample_name + "_meRanGh_genomeMap_sorted.bam"
+bam_file = path + "/working_data/" + sample_name + "/" + sample_name + "_meRanGh_genomeMap_sorted.bam"
 print(bam_file)
 count_C(bam_file)
