@@ -99,7 +99,7 @@ process mapReads {
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
     input: 
-    set val(pair_id), file(cleanReads) from 
+    set val(pair_id), file(cleanReads) from clean_reads
     
     output:
     stdout ch
