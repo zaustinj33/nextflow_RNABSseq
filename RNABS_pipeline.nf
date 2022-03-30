@@ -1,6 +1,6 @@
 // Define input parameters
 
-params.reads = "$baseDir/raw_data/test/*_{1,2}.fq"
+params.reads = "$baseDir/raw_data/testSmall/*_{1,2}.fq"
 params.transcriptome_file = "$baseDir/../Annotation/mm10.fa"
 params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
@@ -78,7 +78,7 @@ process cleanReads {
 
     output:
     tuple val(pair_id), file("*val*.fq") into clean_reads
-    tuple val(pair_id), file "*.{html, json}" into read_stats 
+    set val(pair_id), file "*.{html, json}" into read_stats 
 
     script:
     """
