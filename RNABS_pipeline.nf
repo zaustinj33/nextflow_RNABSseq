@@ -12,7 +12,6 @@ params.working_data = "$baseDir/working_data"
 log.info """\
          RNA Bisulfite Sequencing Pipeline    
          ===================================
-         transcriptome: ${params.transcriptome_file}
          reads        : ${params.reads}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
@@ -43,8 +42,6 @@ process fastqc {
         .fromFilePairs( params.reads, checkIfExists: true )
         .into { read_pairs_ch; read_pairs2_ch }
     
-
-
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
 
