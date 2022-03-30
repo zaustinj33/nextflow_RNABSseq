@@ -101,7 +101,7 @@ process mapReads {
     
     output:
     //stdout ch
-    set val(pair_id) into pair_id_name
+    val(pair_id) into pair_id_name
     set file("*.bam") into raw_bam
     set val(pair_id), file("*.bai") into raw_bai
 
@@ -124,7 +124,7 @@ process countCs {
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id) from pair_id_name
+    val(pair_id) from pair_id_name
 
     output:
     set val(pair_id), file(cutoffFiles) into cutoff_bam
