@@ -24,7 +24,7 @@ log.info """\
 Channel 
     .fromFilePairs( params.reads, checkIfExists: true )
     .ifEmpty{ error "No matching reads"}
-    .set { read_pairs_ch; read_pairs2_ch } 
+    .into { read_pairs_ch; read_pairs2_ch } 
 
 process setup {
 
