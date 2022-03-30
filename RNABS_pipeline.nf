@@ -100,7 +100,7 @@ process mapReads {
         .into { read_pairs_ch; read_pairs2_ch }
 
     input: 
-    set val(name), file(reads) from clean_reads
+    set file(reads) from clean_reads
 
     script:
     """
