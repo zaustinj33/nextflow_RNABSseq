@@ -143,7 +143,7 @@ process countCs {
 }
 
 // Call C sites
-process countCs {
+process callSites {
     tag "Counting Cs per read in $pair_id"
     scratch true
     cpus 40
