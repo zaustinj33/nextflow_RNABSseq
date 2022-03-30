@@ -125,6 +125,9 @@ process countCs {
     cpus 4
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
+    input:
+    set val(pair_id)
+
     output:
     set val(pair_id), file(cutoffFiles) into cutoff_bam
 
