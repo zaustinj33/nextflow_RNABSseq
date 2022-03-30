@@ -151,7 +151,7 @@ process callSites {
 
     input:
     set val(pair_id), file(mappedFile) from raw_bam
-    file(cutoffFiles) into cutoff_bam
+    file(cutoffFiles) from cutoff_bam
 
     output:
     set val(pair_id), file(rawCountMatrix) into rawCounts
