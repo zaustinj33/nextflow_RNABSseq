@@ -8,6 +8,7 @@ sample_name = sys.argv[1]
 path = sys.argv[2]
 Ccutoff_list = {1:0, 3:0, 5:0, 15:0}
 
+
 # Define functions
 """Count occurances of C's in bam file, remove them, write clean bam file to new file. """
 def count_C(samfile):
