@@ -1,7 +1,6 @@
 // Define input parameters
 
 params.reads = "$baseDir/raw_data/test/*_{1,2}.fq"
-params.transcriptome_file = "$baseDir/../Annotation/mm10.fa"
 params.GTF = "$baseDir/../Annotation/Mus_musculus.GRCm38.96.gtf"
 params.GNM = "$baseDir/../Annotation/mm10.for.RNABS.fa"
 params.multiqc = "$baseDir/multiqc_results"
@@ -15,7 +14,6 @@ log.info """\
          ===================================
          transcriptome: ${params.transcriptome_file}
          reads        : ${params.reads}
-         raw_data     : ${params.rawdata}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
          """
@@ -106,7 +104,7 @@ process mapReads {
     
     output:
     //stdout ch
-    set val(pair_id), file("*.bam") into raw_bam
+    set val(pair_id), file("*.bam") into {raw_bam_Count, raw_bam_Call}
     set val(pair_id), file("*.bai") into raw_bai
 
 
@@ -128,7 +126,7 @@ process countCs {
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id), file(mappedFile) from raw_bam
+    set val(pair_id), file(mappedFile) from raw_bam_Count
 
     output:
     set val(pair_id), file(cutoffFiles) into cutoff_bam
@@ -150,7 +148,7 @@ process callSites {
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id), file(mappedFile) from raw_bam
+    set val(pair_id), file(mappedFile) from raw_bam_Call
     file(cutoffFiles) from cutoff_bam
 
     output:
