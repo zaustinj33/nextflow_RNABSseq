@@ -2,6 +2,8 @@
 
 params.reads = "$baseDir/raw_data/test/*_{1,2}.fq"
 params.transcriptome_file = "$baseDir/../Annotation/mm10.fa"
+params.GTF = "$baseDir/../Annotation/Mus_musculus.GRCm38.96.gtf"
+params.GNM = "$baseDir/../Annotation/mm10.for.RNABS.fa"
 params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
 params.rawdata = "$baseDir/raw_data"
@@ -119,7 +121,6 @@ process mapReads {
 }
 
 // Count Cs per read in mapped files
-
 process countCs {
     tag "Counting Cs per read in $pair_id"
     scratch true
@@ -140,5 +141,46 @@ process countCs {
 
 
 }
+
+// Call C sites
+process countCs {
+    tag "Counting Cs per read in $pair_id"
+    scratch true
+    cpus 40
+    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+
+    input:
+    set val(pair_id), file(mappedFile) from raw_bam
+    file(cutoffFiles) into cutoff_bam
+
+    output:
+    set val(pair_id), file(rawCountMatrix) into rawCounts
+    
+
+    """
+    # Call raw map file
+    meRanCall -p 40 -bam ${mappedFile} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
+
+    # Call cutoff file
+    #meRanCall -p 40 -bam ${cutoffFiles} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
+
+    # get p-value of sites
+    #meRanCall -p 40 -bam $2/result/$1/$1_3_Ccutoff_PE.bam -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr $GNconvrate -fdr 0.05 -mr 0.00001 -mcov 10
+
+    # Annotate sites
+    #sed -i 's/chrM/chrMT/g' $2/CallResult/$1/$1_Genome10xCall.txt
+    #sed -i 's/chr//' $2/CallResult/$1/$1_Genome10xCall.txt
+
+    #sed -i 's/chrM/chrMT/g' $2/CallResult/$1/$1_Genome10xCall_3_Cutoff.txt
+    #sed -i 's/chr//' $2/CallResult/$1/$1_Genome10xCall_3_Cutoff.txt 
+
+    #meRanAnnotate -t $2/CallResult/$1/$1_Genome10xCall.txt -ensGTF -g $GTF -o $2/CallResult/$1/$1_Genome10xCall_annotate.txt -f 'gene'
+    #meRanAnnotate -t $2/CallResult/$1/$1_Genome10xCall_3_Cutoff.txt -ensGTF -g $GTF -o $2/CallResult/$1/$1_Genome10xCall_3_Cutoff_annotate.txt -f 'gene'
+
+    """
+
+
+}
+
 
 
