@@ -74,7 +74,7 @@ process cleanReads {
     tuple val(pair_id), path(reads) from read_pairs_ch
 
     output:
-    tuple val(pair_id), file("*val*.fq") into clean_reads
+    tuple val(pair_id), path("*val*.fq") into clean_reads
     //tuple val(pair_id), file "*.{html, json}" into read_stats 
 
     script:
@@ -102,8 +102,8 @@ process mapReads {
     output:
     //stdout ch
     val(pair_id) into pair_id_name
-    set file("*.bam") into raw_bam
-    set val(pair_id), file("*.bai") into raw_bai
+    path("*.bam") into raw_bam
+    set val(pair_id), path("*.bai") into raw_bai
 
 
     script:
@@ -127,7 +127,7 @@ process countCs {
     val(pair_id) from pair_id_name
 
     output:
-    set val(pair_id), file(cutoffFiles) into cutoff_bam
+    set val(pair_id), path(cutoffFiles) into cutoff_bam
 
     """
     module reset
@@ -146,11 +146,11 @@ process callSites {
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id), file(mappedFile) from raw_bam
-    file(cutoffFiles) from cutoff_bam
+    set val(pair_id), path(mappedFile) from raw_bam
+    path(cutoffFiles) from cutoff_bam
 
     output:
-    set val(pair_id), file(rawCountMatrix) into rawCounts
+    set val(pair_id), path(rawCountMatrix) into rawCounts
     
     script:
     """
