@@ -104,7 +104,8 @@ process mapReads {
     
     output:
     //stdout ch
-    tuple pair_id, file("*.bam") into (raw_bam_Count, raw_bam_Call)
+    set val(pair_id), into raw_bam_Count
+    set val(pair_id), file("*.bam") into raw_bam_Call
     set val(pair_id), file("*.bai") into raw_bai
 
 
@@ -126,7 +127,7 @@ process countCs {
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id) from raw_bam_Count
+    set val(pair_id), file(mappedFile) from raw_bam_Count
 
     output:
     set val(pair_id), file(cutoffFiles) into cutoff_bam
