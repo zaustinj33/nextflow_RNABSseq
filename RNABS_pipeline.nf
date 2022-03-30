@@ -78,7 +78,7 @@ process cleanReads {
 
     output:
     tuple val(pair_id), file("*val*.fq") into clean_reads
-    file "*.{html, json}" into read_stats 
+    tuple val(pair_id), file "*.{html, json}" into read_stats 
 
     script:
     """
@@ -94,6 +94,7 @@ process cleanReads {
 // map reads to C2T converted genome
 process mapReads {
     tag "Mapping reads from $pair_id"
+    cpus 20
     scratch true
 
     publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
@@ -102,12 +103,15 @@ process mapReads {
     set val(pair_id), file(cleanReads) from clean_reads
     
     output:
-    stdout ch
+    //stdout ch
+    set val(pair_id), file("*.bam") into raw_bam
+    set val(pair_id), file("*.bai") into raw_bai
+
 
     script:
     """ 
     module load meRanTK
-    meRanGh align -un -f ${cleanReads[0]} -r ${cleanReads[0]} -t 40 -fmo -ds -S ${pair_id}_genomeMap.sam \
+    meRanGh align -un -f ${cleanReads[0]} -r ${cleanReads[0]} -t 20 -fmo -ds -S ${pair_id}_genomeMap.sam \
      -ds -MM -id /projects/epigenomicslab/Annotation/mm10_meRanGh/BSgenomeIDX \
      -GTF /projects/epigenomicslab/Annotation/mm10.ensGene.for.RNABS.gtf
     """
