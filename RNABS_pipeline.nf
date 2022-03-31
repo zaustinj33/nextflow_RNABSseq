@@ -147,7 +147,7 @@ process callSites {
 
     input:
     set val(pair_id), path(mappedFile) from raw_bam
-    path(cutoffFiles) from cutoff_bam
+    tuple val(pair_id), path(cutoffFiles) from cutoff_bam
 
     output:
     set val(pair_id), path(rawCountMatrix) into rawCounts
@@ -157,7 +157,6 @@ process callSites {
     # Call raw map file
     module load meRanTK
     echo ${cutoffFiles}
-    meRanCall -p 40 -bam ${mappedFile} -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
 
     """
 

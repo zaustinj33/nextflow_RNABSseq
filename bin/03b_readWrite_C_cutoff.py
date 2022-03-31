@@ -20,7 +20,7 @@ def count_C(samfile):
     # Open cutoff files for writing
     for k in Ccutoff_list.keys():
         save_name = name+"_"+str(k)+"_Ccutoff_PE.bam"
-        print(save_name+'\n')
+        #print(save_name+'\n')
         Ccutoff_list[k] = pysam.AlignmentFile(save_name, "wb", template=bamfile)
     # check each read for C content, write to new file if passed filter
     for read in bamfile.fetch():
