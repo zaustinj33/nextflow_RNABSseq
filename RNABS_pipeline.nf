@@ -130,7 +130,7 @@ process countCs {
 
     output:
     tuple val(pair_id), path("*_Ccutoff_PE.bam") into cutoff_bam
-    set val(pair_id), into pair_id
+    val(pair_id) into pair_id_cutoff
 
     """
     module reset
@@ -177,7 +177,7 @@ process callCutoffSites {
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id) from pair_id
+    set val(pair_id) from pair_id_cutoff
 
     output:
     set val(pair_id), path("*_cutoffCall.txt") into cutoffCounts
