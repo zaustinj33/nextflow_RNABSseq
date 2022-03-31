@@ -1,6 +1,6 @@
 // Define input parameters
 
-params.reads = "$baseDir/raw_data/test/*_{1,2}.fq"
+params.reads = "$baseDir/raw_data/*/*_{1,2}.fq"
 params.GTF = "$baseDir/../Annotation/Mus_musculus.GRCm38.96.gtf"
 params.GNM = "$baseDir/../Annotation/mm10.for.RNABS.fa"
 params.multiqc = "$baseDir/multiqc_results"
@@ -42,7 +42,7 @@ process fastqc {
 
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
-        .into { read_pairs_ch; read_pairs2_ch }
+        .into { read_pairs_ch }
     
     input:
     tuple val(pair_id), path(reads) from read_pairs_ch
@@ -69,7 +69,7 @@ process cleanReads {
 
     Channel
         .fromFilePairs( params.reads, checkIfExists: true )
-        .into { read_pairs_ch; read_pairs2_ch }
+        .into { read_pairs_ch }
 
 
     input:
