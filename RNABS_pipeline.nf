@@ -16,7 +16,7 @@ log.info """\
          reads        : ${params.reads}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
-         C-cutoff = ${params.Ccutoff}
+         C-cutoff : ${params.Ccutoff}
          """
          .stripIndent()
 
@@ -154,7 +154,7 @@ process callSites {
     //output:
     //set val(pair_id), path(rawCountMatrix) into rawCounts
 
-    println(cutoff_bam.containsAll(${params.Ccutoff}))
+    println(cutoff_bam.find(${params.Ccutoff}))
     
     script:
     """
