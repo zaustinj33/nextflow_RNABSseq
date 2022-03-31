@@ -158,6 +158,7 @@ process callSites {
     """
     # Call raw map file
     module load meRanTK
+    printf '%s\n' "${cutoffFiles}" | grep -F -x "${params.cutoff}"
 
     """
 
