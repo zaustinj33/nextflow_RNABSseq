@@ -140,7 +140,7 @@ process countCs {
 
 }
 
-// Call C sites
+// Call C sites from raw mapped reads
 process callSites {
     tag "Counting Cs per read in $pair_id"
     scratch true
@@ -149,10 +149,33 @@ process callSites {
 
     input:
     set val(pair_id), path(mappedFile) from raw_bam
-    tuple val(pair_id), path(cutoffFiles) from cutoff_bam
 
     output:
-    set val(pair_id), path(rawCountMatrix) into rawCounts
+    set val(pair_id), path("*_Call.txt") into rawCounts
+        
+    script:
+    """
+    # Call raw map file
+    module load meRanTK
+    meRanCall -p 40 \
+    -bam ${mappedFile} \
+    -o ${pair_id}_Call.txt \
+    -f ${params.GNM} \
+    -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
+    """
+
+}
+
+
+// Call C sites from cutoff file
+process callSites {
+    tag "Counting Cs per read in $pair_id"
+    scratch true
+    cpus 40
+    publishDir "${params.results}/${pair_id}",  mode: 'copy'
+
+    output:
+    set val(pair_id), path("*_cutoffCall.txt") into cutoffCounts
         
     script:
     """
@@ -160,13 +183,11 @@ process callSites {
     module load meRanTK
     meRanCall -p 40 \
     -bam ${params.working_data}/${pair_id}/${pair_id}_${params.cutoff}_Ccutoff_PE.bam \
-    -o ${pair_id}_${params.cutoff}_Ccutoff.txt \
+    -o ${pair_id}_${params.cutoff}_cutoffCall.txt \
     -f ${params.GNM} \
     -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
     """
 
-
 }
-
 
 
