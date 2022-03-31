@@ -127,7 +127,7 @@ process countCs {
     val(pair_id) from pair_id_name
 
     output:
-    tuple val(pair_id), path("*3_Ccutoff_PE.bam") into cutoff_bam
+    set val(pair_id), path("*3_Ccutoff_PE.bam") into cutoff_bam
 
     """
     module reset
