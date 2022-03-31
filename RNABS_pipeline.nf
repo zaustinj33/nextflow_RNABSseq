@@ -7,6 +7,7 @@ params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
 params.rawdata = "$baseDir/raw_data"
 params.working_data = "$baseDir/working_data"
+params.Ccutoff = '3'
 
 
 log.info """\
@@ -15,6 +16,7 @@ log.info """\
          reads        : ${params.reads}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
+         C-cutoff = ${params.Ccutoff}
          """
          .stripIndent()
 
@@ -149,8 +151,10 @@ process callSites {
     set val(pair_id), path(mappedFile) from raw_bam
     tuple val(pair_id), path(cutoffFiles) from cutoff_bam
 
-    output:
-    set val(pair_id), path(rawCountMatrix) into rawCounts
+    //output:
+    //set val(pair_id), path(rawCountMatrix) into rawCounts
+
+    println(cutoff_bam.containsAll(${params.Ccutoff}))
     
     script:
     """
