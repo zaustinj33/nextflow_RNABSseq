@@ -154,7 +154,7 @@ process callSites {
     //output:
     //set val(pair_id), path(rawCountMatrix) into rawCounts
     
-    println(cutoff_bam.contains("${params.cutoff}"))
+    println(cutoff_bam.toList().containsAll("${params.cutoff}"))
     
     script:
     """
