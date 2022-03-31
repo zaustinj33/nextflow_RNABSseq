@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #%%
 import pysam
-import glob, re, sys
+import glob, re, sys, os
 
 #%%
 sample_name = sys.argv[1]
@@ -12,8 +12,8 @@ Ccutoff_list = {1:0, 3:0, 5:0, 15:0}
 # Define functions
 """Count occurances of C's in bam file, remove them, write clean bam file to new file. """
 def count_C(samfile):
-    name = re.sub("_genomeMap_sorted.bam",'',samfile)
-    sys.stdout.write("processing:\t" + samfile)
+    name = re.sub("_genomeMap_sorted.bam",'',os.path.basename(samfile))
+    sys.stdout.write("processing:\t" + name)
     removed_read_count = 0
     bamfile = pysam.AlignmentFile(samfile,"rb", check_sq=False, threads=4)
 
@@ -54,6 +54,6 @@ def count_C(samfile):
 
 
 #%%
-bam_file = sample_name + "_genomeMap_sorted.bam"
+bam_file = path + "/working_data/" + sample_name + "/" + sample_name + "_genomeMap_sorted.bam"
 print(bam_file)
 count_C(bam_file)
