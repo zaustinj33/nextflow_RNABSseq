@@ -168,7 +168,7 @@ process callSites {
 
 
 // Call C sites from cutoff file
-process callSites {
+process callCutoffSites {
     tag "Counting Cs per read in $pair_id"
     scratch true
     cpus 40
