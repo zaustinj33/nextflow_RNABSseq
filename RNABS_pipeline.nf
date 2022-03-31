@@ -152,6 +152,7 @@ process callSites {
 
     output:
     set val(pair_id), path("*_Call.txt") into rawCounts
+    set val(pair_id), into pair_id
         
     script:
     """
@@ -173,6 +174,9 @@ process callCutoffSites {
     scratch true
     cpus 40
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
+
+    input:
+    set val(pair_id) from pair_id
 
     output:
     set val(pair_id), path("*_cutoffCall.txt") into cutoffCounts
