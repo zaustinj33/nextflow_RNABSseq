@@ -13,14 +13,14 @@ Ccutoff_list = {1:0, 3:0, 5:0, 15:0}
 """Count occurances of C's in bam file, remove them, write clean bam file to new file. """
 def count_C(samfile):
     name = re.sub("_genomeMap_sorted.bam",'',samfile)
-    sys.stdout.write("processing:\t" + os.path.basename(name))
+    sys.stdout.write("processing:\t" + os.path.basename(name)+'\n')
     removed_read_count = 0
     bamfile = pysam.AlignmentFile(samfile,"rb", check_sq=False, threads=4)
 
     # Open cutoff files for writing
     for k in Ccutoff_list.keys():
         save_name = name+"_"+str(k)+"_Ccutoff_PE.bam"
-        print(save_name)
+        print(save_name+'\n')
         Ccutoff_list[k] = pysam.AlignmentFile(save_name, "wb", template=bamfile)
     # check each read for C content, write to new file if passed filter
     for read in bamfile.fetch():
