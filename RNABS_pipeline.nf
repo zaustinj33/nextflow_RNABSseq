@@ -4,7 +4,7 @@ params.reads = "$baseDir/raw_data/test/*_{1,2}.fq"
 params.GTF = "$baseDir/../Annotation/Mus_musculus.GRCm38.96.gtf"
 params.GNM = "$baseDir/../Annotation/mm10.for.RNABS.fa"
 params.multiqc = "$baseDir/multiqc_results"
-params.outdir = "$baseDir/results"
+params.results = "$baseDir/results"
 params.rawdata = "$baseDir/raw_data"
 params.working_data = "$baseDir/working_data"
 params.cutoff = "3"
@@ -14,7 +14,7 @@ log.info """\
          RNA Bisulfite Sequencing Pipeline    
          ===================================
          reads        : ${params.reads}
-         outdir       : ${params.outdir}
+         outdir       : ${params.results}
          working_data : ${params.working_data}
          C-cutoff : ${params.cutoff}
          """
@@ -30,7 +30,7 @@ Channel
 process setup {
 
     """
-    mkdir -p $params.outdir
+    mkdir -p $params.results
     mkdir -p $params.working_data
     """
 }
@@ -177,7 +177,7 @@ process callCutoffSites {
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
     input:
-    set val(pair_id) from pair_id_cutoff
+    val(pair_id) from pair_id_cutoff
 
     output:
     set val(pair_id), path("*_cutoffCall.txt") into cutoffCounts
