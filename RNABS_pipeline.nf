@@ -158,7 +158,7 @@ process callSites {
     """
     # Call raw map file
     module load meRanTK
-    echo "${pair_id}_${params.cutoff}_Ccutoff_PE.bam"
+    meRanCall -p 40 -bam "${PWD}/${params.working_data}/${pair_id}/${pair_id}_${params.cutoff}_Ccutoff_PE.bam" -f ${params.GNM} -mBQ 30 -gref -rl 150 -sc 10 -cr 1 -mr 0.00001 -mcov 10
     """
 
 
