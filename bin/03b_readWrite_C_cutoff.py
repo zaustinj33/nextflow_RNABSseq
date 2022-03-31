@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #%%
 import pysam
-import glob, re, sys
+import glob, re, sys, os
 
 #%%
 sample_name = sys.argv[1]
