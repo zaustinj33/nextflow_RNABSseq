@@ -7,7 +7,7 @@ params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
 params.rawdata = "$baseDir/raw_data"
 params.working_data = "$baseDir/working_data"
-params.cutoff = ['3']
+params.cutoff = '3'
 
 
 log.info """\
@@ -16,7 +16,7 @@ log.info """\
          reads        : ${params.reads}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
-         C-cutoff : ${params.Ccutoff}
+         C-cutoff : ${params.cutoff}
          """
          .stripIndent()
 
@@ -158,10 +158,7 @@ process callSites {
     """
     # Call raw map file
     module load meRanTK
-    if [[ " ${cutoffFiles} " =~ " ${params.cutoff} " ]]; then
-        echo 'true'
-    else
-        echo 'false'
+    printf '%s\n' "${cutoffFiles[@]}" | grep -F -x "${params.cutoff}"
 
     """
 
