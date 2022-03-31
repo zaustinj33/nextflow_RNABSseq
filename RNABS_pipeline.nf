@@ -147,9 +147,9 @@ process callSites {
     cpus 40
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
-    input:
-    set val(pair_id), path(mappedFile) from raw_bam
-    tuple val(pair_id), path(cutoffFiles) from cutoff_bam
+    //input:
+    //set val(pair_id), path(mappedFile) from raw_bam
+    //tuple val(pair_id), path(cutoffFiles) from cutoff_bam
 
     //output:
     //set val(pair_id), path(rawCountMatrix) into rawCounts
