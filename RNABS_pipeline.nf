@@ -16,7 +16,7 @@ log.info """\
          reads        : ${params.reads}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
-         C-cutoff : ${params.Ccutoff}
+         C-cutoff : ${params.cutoff}
          """
          .stripIndent()
 
