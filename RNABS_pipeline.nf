@@ -16,7 +16,7 @@ log.info """\
          reads        : ${params.reads}
          outdir       : ${params.outdir}
          working_data : ${params.working_data}
-         C-cutoff : ${params.cutoff}
+         C-cutoff : ${params.Ccutoff}
          """
          .stripIndent()
 
@@ -147,20 +147,21 @@ process callSites {
     cpus 40
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
 
-    //input:
-    //set val(pair_id), path(mappedFile) from raw_bam
-    //tuple val(pair_id), path(cutoffFiles) from cutoff_bam
+    input:
+    set val(pair_id), path(mappedFile) from raw_bam
+    tuple val(pair_id), path(cutoffFiles) from cutoff_bam
 
-    //output:
-    //set val(pair_id), path(rawCountMatrix) into rawCounts
-    
-    println(cutoff_bam.toList().containsAll("${params.cutoff}"))
-    
+    output:
+    set val(pair_id), path(rawCountMatrix) into rawCounts
+        
     script:
     """
     # Call raw map file
     module load meRanTK
-    echo ${cutoffFiles}
+    if [[ " ${cutoffFiles} " =~ " ${params.cutoff} " ]]; then
+        echo 'true'
+    else
+        echo 'false'
 
     """
 
