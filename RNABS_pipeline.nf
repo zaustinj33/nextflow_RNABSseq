@@ -94,7 +94,7 @@ process mapReads {
     cpus 20
     scratch true
 
-    publishDir "${params.working_data}/${pair_id}",  mode: 'copy'
+    publishDir "${params.working_data}/${pair_id}",  mode: 'copy', overwrite: true
 
     input: 
     set val(pair_id), file(cleanReads) from clean_reads
@@ -144,7 +144,7 @@ process callSites {
     scratch true
     cpus 40
     publishDir "${params.results}/${pair_id}",  mode: 'copy'
-    
+
     input:
     set val(pair_id), path(mappedFile) from raw_bam
     path(cutoffFiles) from cutoff_bam
