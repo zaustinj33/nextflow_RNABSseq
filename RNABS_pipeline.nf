@@ -130,6 +130,7 @@ process countCs {
 
     output:
     tuple val(pair_id), path("*_Ccutoff_PE.bam") into cutoff_bam
+    set val(pair_id), into pair_id
 
     """
     module reset
@@ -152,7 +153,7 @@ process callSites {
 
     output:
     set val(pair_id), path("*_Call.txt") into rawCounts
-    set val(pair_id), into pair_id
+    
         
     script:
     """
