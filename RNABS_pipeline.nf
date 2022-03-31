@@ -7,7 +7,7 @@ params.multiqc = "$baseDir/multiqc_results"
 params.outdir = "$baseDir/results"
 params.rawdata = "$baseDir/raw_data"
 params.working_data = "$baseDir/working_data"
-params.cutoff = '3'
+params.cutoff = "3"
 
 
 log.info """\
