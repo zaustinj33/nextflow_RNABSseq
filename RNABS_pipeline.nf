@@ -104,8 +104,8 @@ process mapReads {
     output:
     //stdout ch
     val(pair_id) into pair_id_name
-    path("*.bam") into raw_bam
-    set val(pair_id), path("*.bai") into raw_bai
+    set val(pair_id), path("*.bam") into raw_bam
+    path("*.bai") into raw_bai
 
 
     script:
