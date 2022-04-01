@@ -1,4 +1,22 @@
+// Bare-bones pipeline for the analysis of RNA BS-seq data, based on the pipeline used in Johnson et al., 2022 NAR
+// Setup: raw_data directory containing subdirectories with paired end reads
+// Steps:
+//  1) Adapter trimming, read cleaning, and mbias trimming of raw reads.
+//  2) Mapping to C2T converted mm10 genome using meRanGh.
+//  3) Performing a C-cutoff of 3 to mapped reads.
+//  4) Methylation calling of signal (C-cutoff BAM) and noise (full BAM) using meRanGh
+
+
+// Implementation wish list:
+//  0) Option to use user-defined sample list as input (sample name, group name)
+//  1) Option to use Gini-coefficient to determine C-cutoff
+//  2) Signal/Noise filtering of called sites
+//  3) Aggregation of final sites into Count Matrix
+//  4) Addition of R analysis code to visualize results
+
 // Define input parameters
+
+//
 
 params.reads = "$baseDir/raw_data/*/*_{1,2}.fq"
 params.GTF = "$baseDir/../Annotation/Mus_musculus.GRCm38.96.gtf"
@@ -16,7 +34,7 @@ log.info """\
          reads        : ${params.reads}
          outdir       : ${params.results}
          working_data : ${params.working_data}
-         C-cutoff : ${params.cutoff}
+         C-cutoff     : ${params.cutoff}
          """
          .stripIndent()
 
