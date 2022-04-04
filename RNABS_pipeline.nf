@@ -15,7 +15,6 @@
 //  4) Addition of R analysis code to visualize results
 
 // Define input parameters
-
 //
 
 params.reads = "$baseDir/raw_data/*/*_{1,2}.fq"
