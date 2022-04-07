@@ -6,7 +6,6 @@
 //  3) Performing a C-cutoff of 3 to mapped reads.
 //  4) Methylation calling of signal (C-cutoff BAM) and noise (full BAM) using meRanGh
 
-
 // Implementation wish list:
 //  0) Option to use user-defined sample list as input (sample name, group name)
 //  1) Option to use Gini-coefficient to determine C-cutoff
