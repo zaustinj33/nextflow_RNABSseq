@@ -17,6 +17,7 @@
 // Currently testing: Option to use Gini coeff
 
 
+
 params.reads = "$baseDir/raw_data/*/*_{1,2}.fq"
 params.GTF = "$baseDir/../Annotation/Mus_musculus.GRCm38.96.gtf"
 params.GNM = "$baseDir/../Annotation/mm10.for.RNABS.fa"
